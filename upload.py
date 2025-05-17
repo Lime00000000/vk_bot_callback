@@ -16,7 +16,7 @@ vk_session = vk_api.VkApi(token=GROUP_TOKEN)
 vk = vk_session.get_api()
 
 hash_set = set()
-db_lock = Lock()
+db_lock = Lock() #нужно просмотреть 
 
 
 def init_db():
@@ -38,7 +38,7 @@ def init_db():
         )
         ''')
 
-        conn.commit()
+        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
         conn.close()
 
 
@@ -61,7 +61,7 @@ def hash_to_db():
         for h in hash_set:
             cursor.execute('INSERT OR IGNORE INTO hash_sum (start_hash) VALUES (?)', (h,))
 
-        conn.commit()
+        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
         conn.close()
 
 
@@ -82,7 +82,7 @@ def db_insert(user_id, group_id, images):
             'INSERT OR REPLACE INTO user (id, link, image) VALUES (?, ?, ?)',
             (user_id, group_id, img_str)
         )
-        conn.commit()
+        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
         conn.close()
 
 
