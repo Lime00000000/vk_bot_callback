@@ -8,7 +8,6 @@ from threading import Lock
 app = Flask(__name__)
 
 GROUP_TOKEN = "TOKEN"  # Токен сообщества
-ACCESS_TOKEN = "TOKEN"  # Пользовательский токен для API, https://vkhost.github.io я брал отсюда
 CONFIRMATION_CODE = "TOKEN"  # Код подтверждения Callback API
 SECRET_KEY = "KEY"  # Секретный ключ (если используется)
 
@@ -16,7 +15,7 @@ vk_session = vk_api.VkApi(token=GROUP_TOKEN)
 vk = vk_session.get_api()
 
 hash_set = set()
-db_lock = Lock() #нужно просмотреть 
+db_lock = Lock()
 
 
 def init_db():
@@ -38,7 +37,6 @@ def init_db():
         )
         ''')
 
-        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
         conn.close()
 
 
@@ -61,7 +59,7 @@ def hash_to_db():
         for h in hash_set:
             cursor.execute('INSERT OR IGNORE INTO hash_sum (start_hash) VALUES (?)', (h,))
 
-        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
+        conn.commit() #тут insert
         conn.close()
 
 
@@ -82,7 +80,7 @@ def db_insert(user_id, group_id, images):
             'INSERT OR REPLACE INTO user (id, link, image) VALUES (?, ?, ?)',
             (user_id, group_id, img_str)
         )
-        conn.commit() #не используется транзакция и возможно, что не обязательно делать коммит
+        conn.commit() #есть insert
         conn.close()
 
 
